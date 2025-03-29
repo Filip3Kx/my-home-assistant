@@ -1,6 +1,10 @@
 # my-home-assistant
 My homeassistant configuration in Docker Compose
 
+Supports:
+- VPN connection from outside the home network
+- ACL's both on Tailscale VPN and on the Nginx Reverse Proxy
+
 # Dashboard
 ![image](https://github.com/user-attachments/assets/c1ccdd38-863e-45a0-b965-d9b5a3f20ee8)
 
