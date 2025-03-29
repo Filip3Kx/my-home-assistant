@@ -1,0 +1,117 @@
+#running on RPI5
+services:
+  nginx:
+    container_name: nginx
+    image: 'jc21/nginx-proxy-manager:latest'
+    restart: unless-stopped
+    volumes:
+      - /srv/nginx/data:/data
+      - /srv/nginx/letsencrypt:/etc/letsencrypt
+    network_mode: host
+  homeassistant:
+    container_name: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:stable"
+    volumes:
+      - /srv/homeassistant:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:latest
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - /srv/mosquitto/config:/mosquitto/config
+      - /srv/mosquitto/data:/mosquitto/data
+      - /srv/mosquitto/log:/mosquitto/log
+    environment:
+      - TZ=Europe/Warsaw
+    networks:
+      - homeassistant
+
+  pv2mqtt:
+    image: ghcr.io/wez/govee2mqtt:latest
+    container_name: govee2mqtt
+    restart: unless-stopped
+    env_file:
+      - .env
+    network_mode: host
+
+  tailscale:
+    container_name: ts_homeassistant
+    image: tailscale/tailscale
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    volumes:
+      - /dev/net/tun:/dev/net/tun
+      - /srv/tailscale/varlib:/var/lib
+      - /srv/tailscale/tmp:/tmp
+      - /srv/tailscale/tls:/var/lib/tailscale/certs
+    environment:
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=ha
+      - TS_DEST_IP=192.168.0.10
+      - TS_USERSPACE=0
+    network_mode: host
+  appdaemon:
+    container_name: appdaemon
+    restart: unless-stopped
+    image: acockburn/appdaemon:latest
+    environment:
+      HA_URL: "http://${SERVER_IP}:8123"
+      TOKEN: "${HA_APPDAEMON_KEY}"
+      DASH_URL: "http://${SERVER_IP}:5050"
+    ports:
+      - "5050:5050"
+    volumes:
+      - /srv/appdaemon:/conf
+    depends_on:
+      - homeassistant
+    networks:
+      - homeassistant
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+
+  vscode:
+    container_name: vscode
+    image: codercom/code-server:4.96.4
+    volumes:
+      - /srv:/home/coder/project:rw
+      - /srv/vscode:/home/coder/.local/share/code-server:rw
+    ports:
+      - "8443:8080"
+    command: code-server --auth password --disable-telemetry /home/coder/project
+    environment:
+      PASSWORD: "${VSCODE_PASSWORD}"
+    user: "${LOCAL_USER}:${LOCAL_USER}"
+    restart: unless-stopped
+
+  esphome:
+    container_name: ephome
+    image: esphome/esphome
+    volumes:
+      - /srv/esphome:/config
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    privileged: true
+    network_mode: host
+
+  portainer:
+    container_name: portainer
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9000:9000
+    volumes:
+      - /srv/portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+networks:
+  homeassistant:
+    driver: bridge
