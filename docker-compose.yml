@@ -1,5 +1,5 @@
-#running on RPI5
 services:
+  # Routing the different services and doing SSL
   nginx:
     container_name: nginx
     image: 'jc21/nginx-proxy-manager:latest'
@@ -8,6 +8,50 @@ services:
       - /srv/nginx/data:/data
       - /srv/nginx/letsencrypt:/etc/letsencrypt
     network_mode: host
+
+  # DNS + Adblock
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+        - "53:53/tcp"
+        - "53:53/udp"
+        - "61209:80/tcp"
+    environment:
+      TZ: 'Europe/Warsaw'
+      FTLCONF_webserver_api_password: 'password'
+      FTLCONF_dns_listeningMode: 'all'
+    volumes:
+      - '/srv/pihole:/etc/pihole'
+    cap_add:
+      - NET_ADMIN
+      - SYS_TIME
+      - SYS_NICE
+    restart: unless-stopped
+
+  # A cool environment dashboard with features like reddit, RSS and other.
+  glance:
+    container_name: glance
+    image: glanceapp/glance
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - /srv/glance:/app/config
+      - /srv/glance/assets:/app/assets
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  # Same as above but this one has a home assistant integration that creates a lot of monitoring entities
+  monitoring:
+    container_name: monitoring
+    image: nicolargo/glances:latest-full
+    pid: host
+    network_mode: host
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /run/user/1000/podman/podman.sock:/run/user/1000/podman/podman.sock
+    environment:
+      - "GLANCES_OPT=-w"
+    restart: unless-stopped
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
@@ -18,6 +62,8 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
+
+  # MQTT server for dealing with Govee lights and their horrendous API's
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto:latest
@@ -34,6 +80,7 @@ services:
     networks:
       - homeassistant
 
+  # Govee lights
   pv2mqtt:
     image: ghcr.io/wez/govee2mqtt:latest
     container_name: govee2mqtt
@@ -42,9 +89,10 @@ services:
       - .env
     network_mode: host
 
+  # VPN
   tailscale:
     container_name: ts_homeassistant
-    image: tailscale/tailscale
+    image: tailscale/tailscale:latest
     restart: unless-stopped
     cap_add:
       - NET_ADMIN
@@ -60,24 +108,24 @@ services:
       - TS_DEST_IP=192.168.0.10
       - TS_USERSPACE=0
     network_mode: host
-  appdaemon:
-    container_name: appdaemon
-    restart: unless-stopped
-    image: acockburn/appdaemon:latest
-    environment:
-      HA_URL: "http://${SERVER_IP}:8123"
-      TOKEN: "${HA_APPDAEMON_KEY}"
-      DASH_URL: "http://${SERVER_IP}:5050"
-    ports:
-      - "5050:5050"
-    volumes:
-      - /srv/appdaemon:/conf
-    depends_on:
-      - homeassistant
-    networks:
-      - homeassistant
-    user: "${LOCAL_USER}:${LOCAL_USER}"
 
+  # Basic file server
+  samba:
+    container_name: samba
+    image: dperson/samba:latest
+    restart: unless-stopped
+    ports:
+      - "139:139"
+      - "445:445"
+    environment:
+      - TZ=Europe/Warsaw
+    volumes:
+      - /srv/samba:/mount
+    command: >
+      -u "user;password"
+      -s "shared;/mount/shared;yes;no;no;user"
+
+  # VSCode server for editing this entire config from within a home assistance iframe
   vscode:
     container_name: vscode
     image: codercom/code-server:4.96.4
@@ -92,6 +140,7 @@ services:
     user: "${LOCAL_USER}:${LOCAL_USER}"
     restart: unless-stopped
 
+  # Managing ESP32 devices with home assistant
   esphome:
     container_name: ephome
     image: esphome/esphome
@@ -102,6 +151,7 @@ services:
     privileged: true
     network_mode: host
 
+  # Some more monitoring
   portainer:
     container_name: portainer
     image: portainer/portainer-ce:latest
@@ -110,6 +160,18 @@ services:
     volumes:
       - /srv/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  # Cool automations, mainly using it to pull train departures and show them in home assistant
+  node-red:
+    container_name: node-red
+    image: nodered/node-red:latest
+    environment:
+      - TZ=Europe/Warsaw
+    ports:
+      - "1880:1880"
+    volumes:
+      - /srv/node-red:/data
     restart: unless-stopped
 
 networks:
