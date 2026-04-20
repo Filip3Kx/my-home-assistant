@@ -1,19 +1,35 @@
 # my-home-assistant
-My homeassistant configuration in Docker Compose
+My homeassistant configuration in Docker Compose running on RaspberryPi 5
 
-Supports:
-- VPN connection from outside the home network
-- ACL's both on Tailscale VPN and on the Nginx Reverse Proxy
+
 
 # Dashboard
-![image](https://github.com/user-attachments/assets/c1ccdd38-863e-45a0-b965-d9b5a3f20ee8)
+<img  height="800" alt="image" src="https://github.com/user-attachments/assets/910007de-a761-466d-a457-70a71cb42429" />
 
-Running on RaspberryPi5
-
-![image](https://github.com/user-attachments/assets/1890269f-7a2e-49df-9daf-2ced0b7ac6f7)
-![image](https://github.com/user-attachments/assets/573bf017-608e-4203-a48a-35dacc919667)
 
 
 # Easily configurable
-![image](https://github.com/user-attachments/assets/5fd63719-bb68-4c05-ac6f-f9469ecd29f7)
+<img width="395"  alt="image" src="https://github.com/user-attachments/assets/615624e1-e263-45bd-b49a-e2ea5f7e2651" />
 
+<img width="395"  alt="image" src="https://github.com/user-attachments/assets/f335520c-1016-48ac-98a9-00e3f85bf5c5" />
+
+<img width="395"  alt="image" src="https://github.com/user-attachments/assets/5820880f-71ad-4220-b789-b7e58d3bd40f" />
+
+<img width="395" height="125" alt="{73D1BDA2-3371-48EE-8D10-1BD25825EE02}" src="https://github.com/user-attachments/assets/cc4d37f8-af50-4267-98d6-479a165f4fab" />
+
+<img width="395" height="797" alt="{16D2F8E0-8590-4B82-8093-63D996D0B200}" src="https://github.com/user-attachments/assets/48da11c2-f195-4452-94aa-35de4fec33a4" />
+
+
+<img width="395" alt="image" src="https://github.com/user-attachments/assets/9b1cd397-4832-4b36-ac32-6fa5883c4e3b" />
+
+
+<img width="395" alt="image" src="https://github.com/user-attachments/assets/03cd3026-bffe-4caf-8f81-c7066c8ded5a" />
+
+
+
+# External automations
+I found that NodeRed is the easiest way to get custom entities working in Home Assistant while interacting with basically any external API
+
+Here is an example of my Spotify API integration
+
+<img width="1239" height="631" alt="{9B2BDA51-F623-46F7-9306-080E3FAC98D3}" src="https://github.com/user-attachments/assets/d2191850-2ea8-4dff-beff-47c41642b9ac" />
