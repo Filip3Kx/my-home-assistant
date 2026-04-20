@@ -1,0 +1,1683 @@
+kiosk_mode:
+  hide_header: true
+views:
+  - title: Home
+    sections:
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#tv'
+                button_type: slider
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Telewizor
+                icon: mdi:television
+                bg_color: '#fff'
+                bg_opacity: '1'
+                backdrop_blur: '0'
+                bg_blur: '10'
+                hide_backdrop: true
+                entity: media_player.sony_kd_55x85j
+                tap_to_slide: false
+                tap_action:
+                  action: none
+                button_action:
+                  tap_action:
+                    action: none
+              - type: custom:universal-remote-card
+                rows:
+                  - - power
+                    - source
+                  - - home
+                    - menu
+                    - back
+                    - keyboard
+                  - touchpad
+                  - - crunchyroll
+                    - netflix
+                    - disney
+                    - max
+                    - spotify
+                  - search
+                remote_id: remote.sony_kd_55x85j
+                custom_actions: []
+                media_player_id: media_player.sony_kd_55x85j
+                platform: Sony BRAVIA
+                keyboard_id: media_player.tv_salon_adb
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#spotify'
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Spotify
+                icon: mdi:spotify
+                show_header: true
+                hide_backdrop: true
+                bg_opacity: '1'
+                bg_color: '#fff'
+                open_action:
+                  action: perform-action
+                  perform_action: input_select.select_option
+                  target:
+                    entity_id:
+                      - input_select.current_popup
+                  data:
+                    option: spotify_popup
+                close_action:
+                  action: perform-action
+                  perform_action: input_select.select_option
+                  target:
+                    entity_id: input_select.current_popup
+                  data:
+                    option: none
+                modules:
+                  - badgy-condition-helper
+                badgy-condition-helper:
+                  icon_effects:
+                    main_icon:
+                      effect: spin-360
+                      condition:
+                        - condition: state
+                          entity_id: media_player.spotify_filip3k
+                          state:
+                            - playing
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: name
+                    sub_button:
+                      main: []
+                      bottom: []
+                    name: Top 100
+                    icon: mdi:account-music
+                    button_action:
+                      tap_action:
+                        action: perform-action
+                        perform_action: button.press
+                        target:
+                          entity_id: button.play_hity_z_radia_nodered
+                    tap_action:
+                      action: perform-action
+                      perform_action: button.press
+                      target:
+                        entity_id: button.play_hity_z_radia_nodered
+                    modules: []
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: name
+                    sub_button:
+                      main: []
+                      bottom: []
+                    icon: mdi:tea
+                    name: Lofi Beats
+                    tap_action:
+                      action: perform-action
+                      perform_action: button.press
+                      target:
+                        entity_id: button.play_lofi_nodered
+                    button_action:
+                      tap_action:
+                        action: perform-action
+                        perform_action: button.press
+                        target:
+                          entity_id: button.play_lofi_nodered
+              - type: custom:bubble-card
+                card_type: sub-buttons
+                sub_button:
+                  main: []
+                  bottom:
+                    - name: Pictutre
+                      buttons_layout: inline
+                      group:
+                        - entity: media_player.spotify_filip3k
+                          custom_height: 400
+                    - name: Artist
+                      buttons_layout: inline
+                      group:
+                        - fill_width: false
+                          entity: media_player.spotify_filip3k
+                          show_background: false
+                          show_icon: false
+                          show_attribute: true
+                          attribute: media_artist
+                      justify_content: center
+                    - name: Title
+                      buttons_layout: inline
+                      group:
+                        - fill_width: false
+                          entity: media_player.spotify_filip3k
+                          state_background: false
+                          show_background: false
+                          show_icon: false
+                          icon: hacs:hacs
+                          show_attribute: true
+                          attribute: media_title
+                      justify_content: center
+                    - name: Controls
+                      buttons_layout: inline
+                      group:
+                        - entity: media_player.spotify_filip3k
+                          icon: mdi:skip-previous
+                          show_background: false
+                          show_icon: true
+                          scrolling_effect: false
+                          tap_action:
+                            action: perform-action
+                            perform_action: media_player.media_previous_track
+                            target:
+                              entity_id: media_player.spotify_filip3k
+                            data: {}
+                        - icon: mdi:play-pause
+                          state_background: false
+                          show_background: false
+                          entity: media_player.spotify_filip3k
+                          tap_action:
+                            action: perform-action
+                            perform_action: media_player.media_play_pause
+                            target:
+                              entity_id: media_player.spotify_filip3k
+                            data: {}
+                        - icon: mdi:skip-next
+                          show_background: false
+                          scrolling_effect: false
+                          tap_action:
+                            action: perform-action
+                            perform_action: media_player.media_next_track
+                            target:
+                              entity_id: media_player.multiroom_2
+                            data: {}
+                          entity: media_player.spotify_filip3k
+                  bottom_layout: rows
+                rows: 8.688
+                styles: |-
+                  .bubble-sub-button-2 {
+                    font-size: 25px !important;
+                    font-weight: bold;
+                  }
+
+                  .bubble-sub-button-3 {
+                    font-size: 15px !important;
+                  }
+              - type: custom:bubble-card
+                card_type: button
+                button_type: slider
+                sub_button:
+                  main: []
+                  bottom: []
+                entity: media_player.spotify_filip3k
+                icon: mdi:volume-high
+                show_state: false
+                show_attribute: true
+                attribute: volume_level
+                show_name: false
+                styles: |-
+                  * {
+                    color: inherit !important;
+                  }
+
+                  .range-fill { 
+                      background: rgba(19, 21, 54, 0.98) !important;
+                    }
+              - type: custom:bubble-card
+                card_type: select
+                sub_button:
+                  main: []
+                  bottom: []
+                entity: media_player.spotify_filip3k
+                select_attribute: source_list
+                name: Urządzenie
+                show_attribute: true
+                attribute: source
+                icon: mdi:speaker
+                scrolling_effect: false
+                show_icon: false
+                force_icon: false
+                modules: []
+                icon_container_color:
+                  color: none
+                badgy-condition-helper:
+                  entity_badges:
+                    '0':
+                      attribute: friendly_name
+                  icon_effects:
+                    main_icon:
+                      effect: glow
+                      color: pink
+                conditional_icon:
+                  icon_true: hacs:hacs
+                  icon_false: hacs:hacs
+                  conditions:
+                    - condition: device
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#todo'
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Todo
+                icon: mdi:book-check
+                bg_color: '#fff'
+                bg_opacity: '1'
+                hide_backdrop: true
+              - display_order: none
+                type: todo-list
+                entity: todo.julia
+                hide_completed: true
+                hide_create: false
+                title: Julia
+                card_mod:
+                  style: |
+                    ha-card{
+                      background: rgba(194, 109, 227, 0.5);
+                    }
+              - display_order: none
+                type: todo-list
+                entity: todo.filip
+                title: Filip
+                hide_completed: true
+                card_mod:
+                  style: |
+                    ha-card{
+                      background: rgba(77, 84, 209, 0.5);
+                    }
+              - display_order: none
+                type: todo-list
+                entity: todo.wspolne
+                title: Zakupy
+                hide_completed: true
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#vacuum'
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Gnomek
+                icon: mdi:vacuum
+                bg_color: '#fff'
+                bg_opacity: '1'
+                hide_backdrop: true
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Tryby
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: switch
+                    sub_button:
+                      main: []
+                      bottom: []
+                    entity: button.gnomek_kuchnia
+                    name: Kuchnia
+                    icon: mdi:food
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: switch
+                    sub_button:
+                      main: []
+                      bottom: []
+                    entity: button.gnomek_salon
+                    name: Salon
+                    icon: mdi:sofa
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: switch
+                    sub_button:
+                      main: []
+                      bottom: []
+                    entity: button.gnomek_lazienka
+                    name: Łazienka
+                    icon: mdi:toilet
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: switch
+                    sub_button:
+                      main: []
+                      bottom: []
+                    entity: button.gnomek_sypialnia
+                    name: Sypialnia
+                    icon: mdi:bed
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Zaawansowane
+              - type: custom:xiaomi-vacuum-map-card
+                map_source:
+                  camera: image.gnomek_map_0_custom
+                calibration_source:
+                  camera: true
+                entity: vacuum.gnomek
+                vacuum_platform: Roborock
+                map_modes:
+                  - name: Pokoje
+                    icon: mdi:floor-plan
+                    run_immediately: false
+                    coordinates_rounding: true
+                    coordinates_to_meters_divider: 1000
+                    selection_type: ROOM
+                    id_type: number
+                    max_selections: 999
+                    repeats_type: EXTERNAL
+                    max_repeats: 3
+                    service_call_schema:
+                      service: vacuum.send_command
+                      service_data:
+                        command: app_segment_clean
+                        params:
+                          - segments: '[[selection]]'
+                            repeat: '[[repeats]]'
+                        entity_id: '[[entity_id]]'
+                    predefined_selections:
+                      - id: '16'
+                        icon:
+                          name: mdi:food
+                          x: 26575
+                          'y': 30775
+                        outline:
+                          - - 25400
+                            - 30000
+                          - - 27000
+                            - 30000
+                          - - 27750
+                            - 30600
+                          - - 27750
+                            - 31450
+                          - - 25400
+                            - 31450
+                      - id: '17'
+                        icon:
+                          name: mdi:bed
+                          x: 30350
+                          'y': 27475
+                        outline:
+                          - - 28900
+                            - 25500
+                          - - 31800
+                            - 25500
+                          - - 31800
+                            - 29450
+                          - - 28900
+                            - 29450
+                      - id: '18'
+                        icon:
+                          name: mdi:sofa
+                          x: 27025
+                          'y': 28025
+                        outline:
+                          - - 24850
+                            - 24850
+                          - - 28700
+                            - 24850
+                          - - 28700
+                            - 29600
+                          - - 30100
+                            - 29600
+                          - - 30100
+                            - 32000
+                          - - 28500
+                            - 32000
+                          - - 28500
+                            - 30700
+                          - - 27800
+                            - 30700
+                          - - 27000
+                            - 30000
+                          - - 27000
+                            - 29600
+                          - - 24850
+                            - 29600
+                      - id: '19'
+                        icon:
+                          name: mdi:toilet
+                          x: 31025
+                          'y': 30625
+                        outline:
+                          - - 30250
+                            - 29450
+                          - - 31800
+                            - 29450
+                          - - 31800
+                            - 31800
+                          - - 30250
+                            - 31800
+                    variables: {}
+                  - name: Sprzątanie strefowe
+                    icon: mdi:select-drag
+                    run_immediately: false
+                    coordinates_rounding: true
+                    coordinates_to_meters_divider: 1000
+                    selection_type: MANUAL_RECTANGLE
+                    max_selections: 5
+                    repeats_type: INTERNAL
+                    max_repeats: 3
+                    service_call_schema:
+                      service: vacuum.send_command
+                      service_data:
+                        command: app_zoned_clean
+                        params: '[[selection]]'
+                        entity_id: '[[entity_id]]'
+                    predefined_selections: []
+                    variables: {}
+                  - name: Idź do punktu
+                    icon: mdi:map-marker-plus
+                    run_immediately: false
+                    coordinates_rounding: true
+                    coordinates_to_meters_divider: 1000
+                    selection_type: MANUAL_POINT
+                    max_selections: 999
+                    repeats_type: NONE
+                    max_repeats: 1
+                    service_call_schema:
+                      service: roborock.set_vacuum_goto_position
+                      service_data:
+                        x: '[[point_x]]'
+                        'y': '[[point_y]]'
+                        entity_id: '[[entity_id]]'
+                    predefined_selections: []
+                    variables: {}
+                two_finger_pan: false
+                icons:
+                  - icon_id: start_cleanup
+                    icon: mdi:play
+                    conditions:
+                      - entity: vacuum.gnomek
+                        value_not: cleaning
+                      - entity: vacuum.gnomek
+                        value_not: error
+                      - entity: vacuum.gnomek
+                        value_not: returning
+                    tooltip: Uruchom
+                    tap_action:
+                      action: call-service
+                      service: vacuum.start
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: pause
+                    icon: mdi:pause
+                    conditions:
+                      - entity: vacuum.gnomek
+                        value_not: docked
+                      - entity: vacuum.gnomek
+                        value_not: idle
+                      - entity: vacuum.gnomek
+                        value_not: error
+                      - entity: vacuum.gnomek
+                        value_not: paused
+                    tooltip: Wstrzymaj
+                    tap_action:
+                      action: call-service
+                      service: vacuum.pause
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: stop
+                    icon: mdi:stop
+                    conditions:
+                      - entity: vacuum.gnomek
+                        value_not: docked
+                      - entity: vacuum.gnomek
+                        value_not: idle
+                      - entity: vacuum.gnomek
+                        value_not: error
+                      - entity: vacuum.gnomek
+                        value_not: paused
+                    tooltip: Zatrzymaj
+                    tap_action:
+                      action: call-service
+                      service: vacuum.stop
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: return_to_base
+                    icon: mdi:home-map-marker
+                    conditions:
+                      - entity: vacuum.gnomek
+                        value_not: docked
+                      - entity: vacuum.gnomek
+                        value_not: returning
+                    tooltip: Wróć do stacji dokującej
+                    tap_action:
+                      action: call-service
+                      service: vacuum.return_to_base
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: clean_spot
+                    icon: mdi:target-variant
+                    conditions:
+                      - entity: vacuum.gnomek
+                        value_not: docked
+                      - entity: vacuum.gnomek
+                        value_not: error
+                      - entity: vacuum.gnomek
+                        value_not: cleaning
+                      - entity: vacuum.gnomek
+                        value_not: returning
+                    tooltip: Wyczyść miejsce
+                    tap_action:
+                      action: call-service
+                      service: vacuum.clean_spot
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: locate
+                    icon: mdi:map-marker
+                    tooltip: Zlokalizuj
+                    tap_action:
+                      action: call-service
+                      service: vacuum.locate
+                      service_data:
+                        entity_id: vacuum.gnomek
+                  - icon_id: fan_speed_menu_quiet
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Cichy
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: quiet
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: quiet
+                  - icon_id: fan_speed_menu_balanced
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Zbalansowany
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: balanced
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: balanced
+                  - icon_id: fan_speed_menu_turbo
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Turbo
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: turbo
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: turbo
+                  - icon_id: fan_speed_menu_max
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Max
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: max
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: max
+                  - icon_id: fan_speed_menu_max_plus
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Max++
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: max_plus
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: max_plus
+                  - icon_id: fan_speed_menu_off
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Wyłączone
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: 'off'
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: 'off'
+                  - icon_id: fan_speed_menu_smart_mode
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Auto
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: smart_mode
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: smart_mode
+                  - icon_id: fan_speed_menu_custom
+                    menu_id: fan_speed
+                    icon: mdi:fan-alert
+                    label: Niestandardowe
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value: custom
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: custom
+                  - icon_id: fan_speed_unknown
+                    icon: mdi:fan-alert
+                    conditions:
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: quiet
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: balanced
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: turbo
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: max
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: max_plus
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: 'off'
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: smart_mode
+                      - entity: vacuum.gnomek
+                        attribute: fan_speed
+                        value_not: custom
+                    tooltip: Zmień prędkość wentylatora
+                    tap_action:
+                      action: call-service
+                      service: vacuum.set_fan_speed
+                      service_data:
+                        entity_id: vacuum.gnomek
+                        fan_speed: quiet
+                  - type: menu
+                    menu_id: water_box_mode
+                    icon_id: water_box_mode
+                    available_values_attribute: options
+                    icon: mdi:water
+                    icon_mapping:
+                      'off': mdi:water-remove
+                      mild: mdi:water-minus
+                      moderate: mdi:water
+                      intense: mdi:water-plus
+                      custom: mdi:water-sync
+                    tap_action:
+                      action: call-service
+                      service: select.select_option
+                      service_data:
+                        option: '[[value]]'
+                        entity_id: '[[entity_id]]'
+                    entity: select.gnomek_intensywnosc_mopa
+                  - type: menu
+                    menu_id: mop_mode
+                    icon_id: mop_mode
+                    available_values_attribute: options
+                    icon: mdi:water
+                    icon_mapping:
+                      standard: mdi:standard-definition
+                      deep: mdi:high-definition
+                      deep_plus: mdi:ultra-high-definition
+                      custom: mdi:fit-to-screen-outline
+                    tap_action:
+                      action: call-service
+                      service: select.select_option
+                      service_data:
+                        option: '[[value]]'
+                        entity_id: '[[entity_id]]'
+                    entity: select.gnomek_tryb_mopa
+                tiles:
+                  - tile_id: fan_speed
+                    entity: vacuum.gnomek
+                    label: Wentylator
+                    attribute: fan_speed
+                    icon: mdi:fan
+                    translations:
+                      quiet: Cichy
+                      zrównoważony: Normalny
+                      turbo: Turbo
+                      max: Max
+                      max_plus: Max++
+                      wyłączono: Wyłączone
+                      smart_plan: Auto
+                  - tile_id: mop_intensity
+                    label: Intensywność mopa
+                    icon: mdi:water
+                    entity: select.gnomek_intensywnosc_mopa
+                  - tile_id: mop_mode
+                    label: Tryb mopa
+                    icon: mdi:water
+                    entity: select.gnomek_tryb_mopa
+                  - tile_id: vacuum_battery
+                    label: Bateria
+                    icon: mdi:battery
+                    entity: sensor.gnomek_bateria
+                  - tile_id: cleaning_count
+                    icon: mdi:counter
+                    label: Licznik sprzątań
+                    entity: sensor.gnomek_lacznie_czyszczen
+                    precision: 0
+                    translations: {}
+                  - tile_id: cleaned_progress
+                    icon: mdi:progress-check
+                    label: Wyczyszczono
+                    unit: '%'
+                    entity: sensor.gnomek_cleaning_progress
+                    translations: {}
+                  - tile_id: cleaning_errors
+                    icon: mdi:history
+                    label: Błędy odkurzacza
+                    entity: sensor.gnomek_blad_odkurzacza
+                    translations:
+                      brak: Brak
+                  - tile_id: status
+                    label: Status
+                    icon: mdi:list-status
+                    entity: sensor.gnomek_status
+                additional_presets: []
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#settings'
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Settings
+                icon: mdi:cog
+                bg_color: '#fff'
+                bg_opacity: '1'
+                hide_backdrop: true
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                sub_button:
+                  main:
+                    - entity: script.dark_mode
+                      icon: mdi:moon-waxing-crescent
+                      name: Dark
+                      show_name: true
+                      tap_action:
+                        action: toggle
+                    - entity: script.1775746386137
+                      name: Light
+                      icon: mdi:white-balance-sunny
+                      show_name: true
+                      tap_action:
+                        action: toggle
+                  bottom: []
+                rows: 1
+                icon: mdi:theme-light-dark
+                name: Motyw
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Wydajność
+                icon: mdi:poll
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Automatyzacje
+                icon: mdi:robot
+              - type: custom:bubble-card
+                card_type: button
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Logi
+                icon: mdi:calendar
+      - type: grid
+        cards:
+          - type: custom:mushroom-person-card
+            entity: person.filip
+            icon_type: entity-picture
+            secondary_info: none
+          - type: custom:mushroom-person-card
+            entity: person.julia
+            icon_type: entity-picture
+            secondary_info: none
+          - type: custom:clock-weather-card
+            entity: weather.forecast_home
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            sub_button:
+              main:
+                - entity: switch.sypialnia_lampka
+                  name: ''
+                  icon: mdi:floor-lamp
+                  show_name: false
+                  state_background: true
+                  scrolling_effect: true
+                  show_state: false
+                  tap_action:
+                    action: toggle
+                - entity: light.biurko_lampka
+                  icon: mdi:crystal-ball
+                  tap_action:
+                    action: toggle
+                - entity: media_player.sypialnia
+                  sub_button_type: default
+                  hide_when_parent_unavailable: false
+                  tap_action:
+                    action: navigate
+                    navigation_path: '#tv'
+              bottom: []
+            entity: button.gnomek_salon
+            name: ''
+            icon: mdi:sofa
+            modules:
+              - room-card-plus
+              - subbutton_colors
+            room-card-plus:
+              card_radius: 33
+              title_em_mobile: 0.6
+              title_em_desktop: 1.6
+              main_icon_bg_color: orange
+              main_icon_bg_off_opacity: 89
+              icon_color: white
+              state_multi_gap: 0
+              state_icon_gap: 0
+              sub_button_size: 50
+            grid_options:
+              columns: 6
+            energy_consumption_graph:
+              entity: sensor.everything_presence_one_55ba08_temperature
+              data_settings:
+                data_source: statistics
+                ignore_date_selector: false
+                extend_fallback_start_to_day_boundary: false
+            tap_action:
+              action: navigate
+              navigation_path: '#salon'
+            rows: 3.094
+            icon_container_color:
+              color: accent
+            sub_button_coloring:
+              button_4:
+                color: '#fff'
+              defaults:
+                off_icon_color: '#fff'
+            subbutton_colors:
+              subbutton1:
+                color: amber
+                condition:
+                  - condition: state
+                    entity_id: switch.sypialnia_lampka
+                    state:
+                      - 'on'
+              subbutton2:
+                color: amber
+                condition:
+                  - condition: state
+                    entity_id: light.biurko_lampka
+                    state:
+                      - 'on'
+              subbutton3:
+                color: amber
+                condition:
+                  - condition: state
+                    entity_id: media_player.sypialnia
+                    state:
+                      - 'on'
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: '#salon'
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            sub_button:
+              main:
+                - entity: light.biurko_lampka_2
+                  icon: mdi:desk-lamp
+                  tap_action:
+                    action: toggle
+                - entity: light.biurko_backlight
+                  icon: mdi:led-strip-variant
+                  tap_action:
+                    action: toggle
+              bottom: []
+            name: ''
+            icon: mdi:bed
+            modules:
+              - room-card-plus
+              - subbutton_colors
+            room-card-plus:
+              icon_color: white
+              main_icon_bg_color: purple
+              sub_button_size: 50
+              card_radius: 33
+            grid_options:
+              columns: 6
+            rows: 3.094
+            subbutton_colors:
+              subbutton1:
+                color: purple
+                condition:
+                  - condition: state
+                    entity_id: light.biurko_lampka_2
+                    state:
+                      - 'on'
+              subbutton2:
+                color: purple
+                condition:
+                  - condition: state
+                    entity_id: light.biurko_backlight
+                    state:
+                      - 'on'
+            tap_action:
+              action: navigate
+              navigation_path: '#bed'
+            button_action:
+              tap_action:
+                action: navigate
+                navigation_path: '#bed'
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            sub_button:
+              main: []
+              bottom: []
+            modules:
+              - room-card-plus
+            rows: 3.094
+            room-card-plus:
+              sub_button_size: 50
+              card_radius: 33
+              icon_color: '#fff'
+              main_icon_bg_color: '#e66363'
+            icon: mdi:fridge
+            name: ''
+            grid_options:
+              columns: 6
+              rows: 3.094
+          - type: custom:bubble-card
+            card_type: button
+            button_type: name
+            sub_button:
+              main: []
+              bottom: []
+            modules:
+              - room-card-plus
+            rows: 3.094
+            room-card-plus:
+              sub_button_size: 50
+              card_radius: 33
+              icon_color: '#fff'
+              main_icon_bg_color: '#68bae3'
+            icon: mdi:paper-roll
+            name: ''
+            grid_options:
+              columns: 6
+              rows: 3.094
+          - type: custom:mini-graph-card
+            name: Giełda
+            icon: mdi:home
+            entities:
+              - entity: sensor.nodered_7f2421ec3507bdbb
+                attribute: total
+                name: Portfolio
+                unit: $
+                color: blue
+                show_state: true
+                show_graph: true
+                show_fill: true
+                show_points: true
+              - entity: sensor.nodered_7f2421ec3507bdbb
+                attribute: invested
+                name: Zainwestowano
+                unit: $
+                color: green
+                show_state: true
+                show_graph: true
+                show_fill: true
+                show_points: true
+            height: 70
+            line_width: 3
+            hours_to_show: 72
+            points_per_hour: 1
+            align_state: center
+          - type: custom:bubble-card
+            card_type: sub-buttons
+            sub_button:
+              main: []
+              bottom:
+                - name: Automatically grouped
+                  buttons_layout: inline
+                  group:
+                    - icon: mdi:spotify
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#spotify'
+                      fill_width: true
+                      custom_height: 50
+                      content_layout: icon-left
+                      show_icon: true
+                    - icon: mdi:vacuum
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#vacuum'
+                      custom_height: 50
+                    - icon: mdi:television
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#tv'
+                      custom_height: 50
+                    - icon: mdi:book-check
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#todo'
+                      custom_height: 50
+                    - icon: mdi:cog
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#settings'
+                      custom_height: 50
+              bottom_layout: rows
+            card_layout: large
+            hide_main_background: false
+            footer_mode: true
+            footer_bottom_offset: '-35'
+            rows: 1.781
+            footer_full_width: true
+            styles: |-
+              # .bubble-sub-buttons-container {
+              #   padding-bottom: 40px;
+              # }
+
+              [data-group-id="g_bottom_0"] {
+                margin-bottom: 40px;
+              }
+          - type: custom:bubble-card
+            card_type: sub-buttons
+            sub_button:
+              main: []
+              bottom:
+                - name: Spotify
+                  buttons_layout: inline
+                  group:
+                    - fill_width: false
+                      entity: media_player.spotify_filip3k
+                      custom_height: 60
+                      width: 60
+                      show_background: false
+                      scrolling_effect: false
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#spotify'
+                    - fill_width: false
+                      entity: media_player.spotify_filip3k
+                      show_icon: false
+                      show_attribute: true
+                      attribute: media_artist
+                      state_background: false
+                      show_background: false
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#spotify'
+                    - fill_width: true
+                      show_attribute: true
+                      entity: media_player.spotify_filip3k
+                      attribute: media_title
+                      show_icon: false
+                      state_background: false
+                      show_background: false
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#spotify'
+                    - fill_width: false
+                      icon: mdi:step-backward
+                      state_background: false
+                      show_background: false
+                      tap_action:
+                        action: perform-action
+                        perform_action: media_player.media_previous_track
+                        target:
+                          entity_id: media_player.spotify_filip3k
+                        data: {}
+                      entity: media_player.spotify_filip3k
+                    - fill_width: false
+                      icon: mdi:pause
+                      show_background: false
+                      show_icon: true
+                      scrolling_effect: false
+                      tap_action:
+                        action: perform-action
+                        perform_action: media_player.media_play_pause
+                        target:
+                          entity_id: media_player.spotify_filip3k
+                        data: {}
+                      entity: media_player.spotify_filip3k
+                    - fill_width: false
+                      icon: mdi:step-forward
+                      show_background: false
+                      show_icon: true
+                      scrolling_effect: false
+                      tap_action:
+                        action: perform-action
+                        perform_action: media_player.media_next_track
+                        target:
+                          entity_id: media_player.spotify_filip3k
+                        data: {}
+                      entity: media_player.spotify_filip3k
+                  justify_content: start
+            visibility:
+              - condition: state
+                entity: media_player.spotify_filip3k
+                state: playing
+              - condition: state
+                entity: input_select.current_popup
+                state: none
+            rows: 1.313
+            footer_mode: true
+            footer_full_width: true
+            footer_bottom_offset: '75'
+      - type: grid
+        cards:
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#salon'
+                button_type: name
+                sub_button:
+                  main: []
+                  bottom: []
+                icon: mdi:sofa
+                name: Salon
+                bg_color: '#fff'
+                bg_opacity: '1'
+                hide_backdrop: true
+                close_by_clicking_outside: true
+                close_on_click: false
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Światła
+              - type: custom:bubble-card
+                card_type: button
+                button_type: slider
+                entity: light.biurko_lampka
+                use_accent_color: false
+                light_transition: false
+                modules:
+                  - animated_icon
+                animated_icon:
+                  mode: light_bulb
+                  ignore_state: false
+                sub_button:
+                  main:
+                    - entity: light.biurko_lampka
+                      sub_button_type: slider
+                      light_slider_type: hue
+                    - entity: light.biurko_lampka
+                      sub_button_type: slider
+                      light_slider_type: white_temp
+                  bottom: []
+                tap_action:
+                  action: toggle
+              - type: custom:bubble-card
+                card_type: button
+                button_type: switch
+                sub_button:
+                  main: []
+                  bottom: []
+                entity: switch.sypialnia_lampka
+                name: Vibe lampka
+                icon: mdi:desk-lamp
+                modules:
+                  - animated_icon
+                animated_icon:
+                  mode: light_bulb
+                tap_action:
+                  action: toggle
+              - type: custom:bubble-card
+                card_type: button
+                button_type: switch
+                sub_button:
+                  main: []
+                  bottom: []
+                entity: light.telewizor_les
+                rows: '1'
+                icon: mdi:led-strip-variant
+                name: Ledy TV
+                tap_action:
+                  action: toggle
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Termostat
+              - type: custom:bubble-card
+                card_type: climate
+                sub_button:
+                  main:
+                    - name: HVAC modes menu
+                      select_attribute: hvac_modes
+                      state_background: false
+                      show_arrow: false
+                      sub_button_type: select
+                  bottom: []
+                entity: climate.thermostat_salon
+                modules:
+                  - animated_icon
+                animated_icon:
+                  mode: fan
+                show_name: false
+                show_state: true
+                tap_action:
+                  action: toggle
+                button_action:
+                  tap_action:
+                    action: toggle
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Czujniki
+              - type: horizontal-stack
+                cards:
+                  - type: custom:mini-graph-card
+                    name: Temperatura
+                    icon: mdi:thermometer
+                    entities:
+                      - entity: climate.thermostat_salon
+                        attribute: current_temperature
+                        name: Temperatura
+                        unit: °C
+                        color: red
+                        show_state: true
+                        show_graph: true
+                        show_fill: true
+                        show_points: true
+                    height: 60
+                    line_width: 3
+                    hours_to_show: 2
+                    points_per_hour: 5
+                    align_state: center
+                    card_mod:
+                      style: |
+                        ha-card {
+                          margin-right: 5px;
+                        }
+                  - type: custom:mini-graph-card
+                    name: Wilgotność
+                    icon: mdi:water
+                    entities:
+                      - entity: sensor.everything_presence_one_55ba08_humidity
+                        name: Temperatura
+                        unit: '%'
+                        color: blue
+                        show_state: true
+                        show_graph: true
+                        show_fill: true
+                        show_points: true
+                    height: 60
+                    line_width: 3
+                    hours_to_show: 2
+                    points_per_hour: 5
+                    align_state: center
+                    card_mod:
+                      style: |
+                        ha-card {
+                          margin-right: 5px;
+                        }
+              - type: custom:bubble-card
+                card_type: separator
+                sub_button:
+                  main: []
+                  bottom: []
+                name: Urządzenia
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: state
+                    sub_button:
+                      main: []
+                      bottom: []
+                    icon: mdi:television
+                    name: Telewizor
+                    modules:
+                      - room-card-plus
+                    rows: 2.625
+                    room-card-plus:
+                      main_icon_bg_color: purple
+                      icon_size: 52
+                      icon_color: '#fff'
+                      card_radius: 33
+                      main_icon_bg_off_opacity: 50
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#tv'
+                    button_action:
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#tv'
+                    entity: media_player.sypialnia
+                    show_state: true
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: state
+                    sub_button:
+                      main: []
+                      bottom: []
+                    icon: mdi:vacuum
+                    name: Gnomek
+                    modules:
+                      - room-card-plus
+                    rows: 2.625
+                    room-card-plus:
+                      main_icon_bg_color: purple
+                      icon_size: 52
+                      icon_color: '#fff'
+                      card_radius: 33
+                      main_icon_bg_off_opacity: 50
+                    animated_icon:
+                      mode: vacuum
+                    button_action:
+                      tap_action:
+                        action: navigate
+                        navigation_path: '#vacuum'
+                    tap_action:
+                      action: navigate
+                      navigation_path: '#vacuum'
+                    entity: vacuum.gnomek
+              - type: horizontal-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: state
+                    sub_button:
+                      main: []
+                      bottom: []
+                    entity: switch.glosniki_salon
+                    modules:
+                      - room-card-plus
+                    rows: 2.625
+                    show_state: true
+                    name: Głośniki
+                    icon: mdi:speaker-multiple
+                    tap_action:
+                      action: toggle
+                    button_action:
+                      tap_action:
+                        action: toggle
+                    room-card-plus:
+                      card_radius: 33
+                      main_icon_bg_color: purple
+                      main_icon_bg_off_opacity: 54
+                      icon_color: '#fff'
+            grid_options:
+              columns: 12
+              rows: auto
+          - type: vertical-stack
+            cards:
+              - type: custom:bubble-card
+                card_type: pop-up
+                hash: '#bed'
+                button_type: name
+                name: Sypialnia
+                icon: mdi:bed
+                bg_opacity: '1'
+                bg_color: '#fff'
+                hide_backdrop: true
+                sub_button:
+                  main: []
+                  bottom: []
+              - type: vertical-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    sub_button:
+                      main: []
+                      bottom: []
+                    name: Światła
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:bubble-card
+                        card_type: button
+                        button_type: switch
+                        sub_button:
+                          main: []
+                          bottom: []
+                        entity: scene.biurko_gaming
+                        name: Gaming
+                        icon: mdi:controller
+                        tap_action:
+                          action: toggle
+                        modules:
+                          - badgy-condition-helper
+                        badgy-condition-helper:
+                          main_icon_background:
+                            color: purple
+                      - type: custom:bubble-card
+                        card_type: button
+                        button_type: switch
+                        sub_button:
+                          main: []
+                          bottom: []
+                        entity: scene.biurko_praca
+                        modules:
+                          - badgy-condition-helper
+                        badgy-condition-helper:
+                          main_icon_background:
+                            color: amber
+                        name: Praca
+                      - type: custom:bubble-card
+                        card_type: button
+                        button_type: switch
+                        sub_button:
+                          main: []
+                          bottom: []
+                        entity: script.seks_mode
+                        name: Seks
+                        icon: mdi:cards-heart
+                        tap_action:
+                          action: toggle
+                        modules:
+                          - badgy-condition-helper
+                        badgy-condition-helper:
+                          main_icon_background:
+                            color: pink
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: slider
+                    entity: light.biurko_backlight
+                    use_accent_color: false
+                    light_transition: false
+                    modules:
+                      - animated_icon
+                    animated_icon:
+                      mode: light_bulb
+                      ignore_state: false
+                    sub_button:
+                      main:
+                        - entity: light.biurko_lampka
+                          sub_button_type: slider
+                          light_slider_type: hue
+                        - entity: light.biurko_lampka
+                          sub_button_type: slider
+                          light_slider_type: white_temp
+                      bottom: []
+                    tap_action:
+                      action: toggle
+                    name: Led Backlight
+                  - type: custom:bubble-card
+                    card_type: button
+                    button_type: slider
+                    entity: light.biurko_lampka_2
+                    use_accent_color: false
+                    light_transition: false
+                    modules:
+                      - animated_icon
+                    animated_icon:
+                      mode: light_bulb
+                      ignore_state: false
+                    sub_button:
+                      main:
+                        - entity: light.biurko_lampka
+                          sub_button_type: slider
+                          light_slider_type: hue
+                        - entity: light.biurko_lampka
+                          sub_button_type: slider
+                          light_slider_type: white_temp
+                      bottom: []
+                    tap_action:
+                      action: toggle
+                    name: Lampka
+              - type: vertical-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    sub_button:
+                      main: []
+                      bottom: []
+                    name: Termostat
+                  - type: custom:bubble-card
+                    card_type: climate
+                    sub_button:
+                      main:
+                        - name: HVAC modes menu
+                          select_attribute: hvac_modes
+                          state_background: false
+                          show_arrow: false
+                          sub_button_type: select
+                      bottom: []
+                    entity: climate.thermostat_sypialnia
+                    modules:
+                      - animated_icon
+                    animated_icon:
+                      mode: fan
+                    show_name: false
+                    scrolling_effect: false
+                    show_attribute: false
+                    attribute: current_temperature
+                    show_state: true
+                    tap_action:
+                      action: toggle
+                    button_action:
+                      tap_action:
+                        action: toggle
+              - type: vertical-stack
+                cards:
+                  - type: custom:bubble-card
+                    card_type: separator
+                    sub_button:
+                      main: []
+                      bottom: []
+                    name: Czujniki
+                  - type: horizontal-stack
+                    cards:
+                      - type: custom:mini-graph-card
+                        name: Temperatura
+                        icon: mdi:thermometer
+                        entities:
+                          - entity: climate.thermostat_sypialnia
+                            attribute: current_temperature
+                            name: Temperatura
+                            unit: °C
+                            color: red
+                            show_state: true
+                            show_graph: true
+                            show_fill: true
+                            show_points: true
+                        height: 60
+                        line_width: 3
+                        hours_to_show: 2
+                        points_per_hour: 5
+                        align_state: center
+                        card_mod:
+                          style: |
+                            ha-card {
+                              margin-right: 5px;
+                            }
+                      - type: custom:mini-graph-card
+                        name: Wilgotność
+                        icon: mdi:water
+                        entities:
+                          - entity: sensor.everything_presence_one_55ba08_humidity
+                            name: Temperatura
+                            unit: '%'
+                            color: blue
+                            show_state: true
+                            show_graph: true
+                            show_fill: true
+                            show_points: true
+                        height: 60
+                        line_width: 3
+                        hours_to_show: 2
+                        points_per_hour: 5
+                        align_state: center
+                        card_mod:
+                          style: |
+                            ha-card {
+                              margin-right: 5px;
+                            }
+    type: sections
+    max_columns: 4
+    theme: Frosted Glass
+    cards: []
+    footer: {}

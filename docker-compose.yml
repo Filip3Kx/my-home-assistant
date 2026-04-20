@@ -1,35 +1,6 @@
 services:
-  # Routing the different services and doing SSL
-  nginx:
-    container_name: nginx
-    image: 'jc21/nginx-proxy-manager:latest'
-    restart: unless-stopped
-    volumes:
-      - /srv/nginx/data:/data
-      - /srv/nginx/letsencrypt:/etc/letsencrypt
-    network_mode: host
 
-  # DNS + Adblock
-  pihole:
-    container_name: pihole
-    image: pihole/pihole:latest
-    ports:
-        - "53:53/tcp"
-        - "53:53/udp"
-        - "61209:80/tcp"
-    environment:
-      TZ: 'Europe/Warsaw'
-      FTLCONF_webserver_api_password: 'password'
-      FTLCONF_dns_listeningMode: 'all'
-    volumes:
-      - '/srv/pihole:/etc/pihole'
-    cap_add:
-      - NET_ADMIN
-      - SYS_TIME
-      - SYS_NICE
-    restart: unless-stopped
-
-  # A cool environment dashboard with features like reddit, RSS and other.
+  # Dashboard
   glance:
     container_name: glance
     image: glanceapp/glance
@@ -40,7 +11,7 @@ services:
       - /srv/glance/assets:/app/assets
       - /var/run/docker.sock:/var/run/docker.sock
 
-  # Same as above but this one has a home assistant integration that creates a lot of monitoring entities
+  # Webapp htop
   monitoring:
     container_name: monitoring
     image: nicolargo/glances:latest-full
@@ -52,6 +23,8 @@ services:
     environment:
       - "GLANCES_OPT=-w"
     restart: unless-stopped
+
+  # HA
   homeassistant:
     container_name: homeassistant
     image: "ghcr.io/home-assistant/home-assistant:stable"
@@ -62,8 +35,41 @@ services:
     restart: unless-stopped
     privileged: true
     network_mode: host
+    devices:
+      - "/dev/ttyUSB0:/dev/ttyUSB0"
 
-  # MQTT server for dealing with Govee lights and their horrendous API's
+  # Might bring back when doing assistant
+  #whisper-stt:
+  #  image: rhasspy/wyoming-whisper
+  #  container_name: whisper-stt
+  #  command: --model base --language pl
+  #  ports:
+  #    - "10300:10300"
+  #  restart: unless-stopped
+  #  networks:
+  #    - homeassistant
+
+  # Might bring back when Sendspin comes out of beta
+  #music-assistant-server:
+  #  image: ghcr.io/music-assistant/server:nightly # <<< Desired release version here (or use beta to get the latest beta version)
+  #  container_name: music-assistant-server
+  #  restart: unless-stopped
+  #   # Network mode must be set to host for MA to work correctly
+  #  network_mode: host
+  #  volumes:
+  #     - /srv/music-assistant-server/data:/data/
+  #  # privileged caps (and security-opt) needed to mount smb folders within the container
+  #  cap_add:
+  #    - SYS_ADMIN
+  #    - DAC_READ_SEARCH
+  #  security_opt:
+  #     - apparmor:unconfined
+  #  environment:
+  #    # Provide logging level as environment variable.
+  #    # default=info, possible=(critical, error, warning, info, debug)
+  #     - LOG_LEVEL=info
+
+  # Used for custom integrations
   mosquitto:
     container_name: mosquitto
     image: eclipse-mosquitto:latest
@@ -80,7 +86,7 @@ services:
     networks:
       - homeassistant
 
-  # Govee lights
+  # Govee bulbs
   pv2mqtt:
     image: ghcr.io/wez/govee2mqtt:latest
     container_name: govee2mqtt
@@ -89,27 +95,39 @@ services:
       - .env
     network_mode: host
 
-  # VPN
-  tailscale:
-    container_name: ts_homeassistant
-    image: tailscale/tailscale:latest
+  # Private alternative to cloudflared
+  # tailscale:
+  #   container_name: ts_homeassistant
+  #   image: tailscale/tailscale:latest
+  #   restart: unless-stopped
+  #   cap_add:
+  #     - NET_ADMIN
+  #     - NET_RAW
+  #   volumes:
+  #     - /dev/net/tun:/dev/net/tun
+  #     - /srv/tailscale/varlib:/var/lib
+  #     - /srv/tailscale/tmp:/tmp
+  #     - /srv/tailscale/tls:/var/lib/tailscale/certs
+  #   environment:
+  #     - TS_STATE_DIR=/var/lib/tailscale
+  #     - TS_HOSTNAME=ha
+  #     - TS_DEST_IP=192.168.0.10
+  #     - TS_USERSPACE=0
+  #   network_mode: host
+
+  # Setup for public access
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: cloudflared
     restart: unless-stopped
-    cap_add:
-      - NET_ADMIN
-      - NET_RAW
-    volumes:
-      - /dev/net/tun:/dev/net/tun
-      - /srv/tailscale/varlib:/var/lib
-      - /srv/tailscale/tmp:/tmp
-      - /srv/tailscale/tls:/var/lib/tailscale/certs
+    command: tunnel run homelab-tunnel
     environment:
-      - TS_STATE_DIR=/var/lib/tailscale
-      - TS_HOSTNAME=ha
-      - TS_DEST_IP=192.168.0.10
-      - TS_USERSPACE=0
+      - TUNNEL_ORIGIN_CERT=/etc/cloudflared/cert.pem
+    volumes:
+      - /srv/cloudflare:/etc/cloudflared
     network_mode: host
 
-  # Basic file server
+  # File server
   samba:
     container_name: samba
     image: dperson/samba:latest
@@ -122,10 +140,10 @@ services:
     volumes:
       - /srv/samba:/mount
     command: >
-      -u "user;password"
-      -s "shared;/mount/shared;yes;no;no;user"
+      -u "test;test"
+      -s "shared;/mount/shared;yes;no;no;test"
 
-  # VSCode server for editing this entire config from within a home assistance iframe
+  # For quick development
   vscode:
     container_name: vscode
     image: codercom/code-server:4.96.4
@@ -140,7 +158,7 @@ services:
     user: "${LOCAL_USER}:${LOCAL_USER}"
     restart: unless-stopped
 
-  # Managing ESP32 devices with home assistant
+  # Everything presence sensors and tinkering
   esphome:
     container_name: ephome
     image: esphome/esphome
@@ -151,18 +169,7 @@ services:
     privileged: true
     network_mode: host
 
-  # Some more monitoring
-  portainer:
-    container_name: portainer
-    image: portainer/portainer-ce:latest
-    ports:
-      - 9000:9000
-    volumes:
-      - /srv/portainer:/data
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: unless-stopped
-
-  # Cool automations, mainly using it to pull train departures and show them in home assistant
+  # External automations for HA
   node-red:
     container_name: node-red
     image: nodered/node-red:latest
@@ -173,6 +180,21 @@ services:
     volumes:
       - /srv/node-red:/data
     restart: unless-stopped
+
+  # Another hosted service
+  mealie:
+    image: ghcr.io/mealie-recipes/mealie:latest
+    container_name: mealie
+    restart: always
+    ports:
+      - "9925:9000"
+    volumes:
+      - /srv/mealie:/app/data
+    environment:
+      ALLOW_SIGNUP: "true"
+      TZ: "Europe/Warsaw"
+      DEFAULT_EMAIL: "test"
+      DEFAULT_PASSWORD: "test"
 
 networks:
   homeassistant:
