@@ -1,6 +1,7 @@
 # my-home-assistant
 My homeassistant configuration in Docker Compose running on RaspberryPi 5
 
+<img width="786" height="740" alt="{E002ABBF-6640-4891-B6F6-701CD8E5E33F}" src="https://github.com/user-attachments/assets/1c7f3888-0cc5-412f-b733-5af1c818287d" />
 
 
 # Dashboard
